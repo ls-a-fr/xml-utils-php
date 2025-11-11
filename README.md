@@ -72,7 +72,7 @@ Next, for a little background, this package is used in [XSL-Core package](https:
 
 ## Installation
 
-This library will (soon) be available on Composer. Install it with:
+This library is available on Composer. Install it with:
 ```sh
 composer require ls-a/xml-utils
 ```
