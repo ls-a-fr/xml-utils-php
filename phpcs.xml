@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="pcsg-generated-ruleset">
+    <file>src</file>
+    <config name="installed_paths" value="phpcs/LsaStandard" />
+    <arg name="extensions" value="php"/>
+
+    <rule ref="Generic">
+        <!-- This rule ensures every abstract class is prefixed with Abstract -->
+        <exclude name="Generic.NamingConventions.AbstractClassNamePrefix.Missing" />
+        <!-- This rule does not work in control structures. Too bad -->
+        <exclude name="Generic.Formatting.SpaceBeforeCast.NoSpace" />
+        <!-- This rule prevents short syntax for array: [] -->
+        <exclude name="Generic.Arrays.DisallowShortArraySyntax" />
+        <!-- I don't understand this rule: if it's found in extended class, it must comply -->
+        <exclude name="Generic.CodeAnalysis.UnusedFunctionParameter.FoundInExtendedClass" />
+        <!-- This rule ensures functions' opening brace is on the same line as declaration -->
+        <exclude name="Generic.Classes.OpeningBraceSameLine" />
+        <!-- This rule is incompatible with Pint -->
+        <exclude name="Generic.Commenting.DocComment.NonParamGroup" />
+        <!-- This rule is incompatible with Pint -->
+        <exclude name="Generic.Commenting.DocComment.TagValueIndent" />
+        <!-- This rule ensures filenames are lowercased, even for classes -->
+        <exclude name="Generic.Files.LowercasedFilename" />
+        <!-- This rule ensures a new line is not present at the end of file -->
+        <exclude name="Generic.Files.EndFileNoNewline" />
+        <!-- This rule is incompatible with Pint-->
+         <exclude name="Generic.Formatting.MultipleStatementAlignment.NotSame" />
+        <!-- This rule ensures control structures opening braces are on the same line as declaration -->
+        <exclude name="Generic.Functions.OpeningFunctionBraceKernighanRitchie" />
+        <!-- This rule ensures Interfaces ends with the "Interface" suffix -->
+        <exclude name="Generic.NamingConventions.InterfaceNameSuffix" />
+        <!-- This rule ensures Traits ends with the "Trait" suffix -->
+        <exclude name="Generic.NamingConventions.TraitNameSuffix" />
+        <!-- This rule ensures a PHP closing tag -->
+        <exclude name="Generic.PHP.ClosingPHPTag" />
+        <!-- This rule ensures TRUE, FALSE and NULL are all uppercased -->
+        <exclude name="Generic.PHP.UpperCaseConstant" />
+        <!-- This rule ensures tabs are used for indent -->
+        <exclude name="Generic.WhiteSpace.DisallowSpaceIndent" />
+    </rule>
+
+    <rule ref="PEAR">
+        <!-- This rule is obsolete -->
+        <exclude name="PEAR.NamingConventions.ValidVariableName.PrivateNoUnderscore" />
+        <!-- This rule is obsolete -->
+        <exclude name="PEAR.NamingConventions.ValidFunctionName.PrivateNoUnderscore" />
+        <!-- This rule has bugs with switch control structures, too bad. Pint will handle format -->
+        <exclude name="PEAR.WhiteSpace.ScopeIndent.IncorrectExact" />
+        <!-- Incompatible with Pint (empty classes, ie Exceptions) -->
+        <exclude name="PEAR.Classes.ClassDeclaration.OpenBraceNewLine" />
+        <!-- Incompatible with PSR12.ControlStructures.ControlStructureSpacing.FirstExpressionLine for multi-line IFs -->
+        <exclude name="PEAR.ControlStructures.MultiLineCondition.SpacingAfterOpenBrace" />
+        <!-- Incompatible with Pint -->
+        <exclude name="PEAR.WhiteSpace.ScopeClosingBrace.Line" />
+        <!-- Superseeded by Squiz.Commenting.ClassComment.Missing -->
+        <exclude name="PEAR.Commenting.ClassComment.Missing" />
+        <!-- Function call signature is handled by Squiz rules -->
+        <exclude name="PEAR.Functions.FunctionCallSignature.FirstArgumentPosition" />
+        <exclude name="PEAR.Functions.FunctionCallSignature.MultipleArguments" />
+        <exclude name="PEAR.Functions.FunctionCallSignature.ContentAfterOpenBracket" />
+        <exclude name="PEAR.Functions.FunctionCallSignature.CloseBracketLine" />
+        <exclude name="PEAR.Functions.FunctionCallSignature.SpaceBeforeCloseBracket" />
+        <exclude name="PEAR.Functions.FunctionCallSignature.Indent" />
+        
+        <!-- Superseeded by Squiz.Commenting.FunctionComment-->
+        <exclude name="PEAR.Commenting.FunctionComment"/>
+        <!-- Superseeded by PSR12.ControlStructures.ControlStructureSpacing-->
+        <exclude name="PEAR.ControlStructures.MultiLineCondition.StartWithBoolean" />
+        <exclude name="PEAR.Commenting.FileComment" />
+        <exclude name="PEAR.Commenting.ClassComment.MissingCategoryTag"/>
+        <exclude name="PEAR.Commenting.ClassComment.MissingPackageTag"/>
+        <exclude name="PEAR.Commenting.ClassComment.MissingAuthorTag"/>
+        <exclude name="PEAR.Commenting.ClassComment.MissingLicenseTag"/>
+        <exclude name="PEAR.Commenting.ClassComment.MissingLinkTag"/>
+        <exclude name="PEAR.Commenting.ClassComment.MissingVersion"/>
+    </rule>
+    
+    <rule ref="PSR1" />
+
+    <rule ref="PSR2">
+        <!-- Incompatible with Pint (empty classes, ie Exceptions) -->
+        <exclude name="PSR2.Classes.ClassDeclaration.OpenBraceNewLine" />
+        <!-- Superseeded by PSR12.ControlStructures.ControlStructureSpacing.FirstExpressionLine -->
+        <exclude name="PSR2.ControlStructures.ControlStructureSpacing.SpacingAfterOpenBrace" />
+        <!-- Does not handle well builder structures, too bad -->
+        <exclude name="PSR2.Methods.FunctionCallSignature.SpaceBeforeCloseBracket" />
+    </rule>
+
+    <rule ref="PSR12">
+        <!-- PSR12 does not say that. Besides, this rule is incompatible with Pint -->
+        <exclude name="PSR12.Classes.AnonClassDeclaration.SpaceAfterKeyword" />
+        <!-- Superseeded by Squiz.WhiteSpace.OperatorSpacing -->
+        <exclude name="PSR12.Operators.OperatorSpacing" />
+    </rule>
+
+    <rule ref="Squiz">
+        <!-- This rule is a good idea but does not allow spreading affectation -->
+        <exclude name="Squiz.Arrays.ArrayDeclaration.SingleLineNotAllowed" />
+        <!-- This rule is incompatible with Pint -->
+        <exclude name="Squiz.Arrays.ArrayDeclaration.DoubleArrowNotAligned" />
+        <!-- Incompatible with Pint -->
+        <exclude name="Squiz.Classes.ClassDeclaration.OpenBraceNewLine" />
+        <!-- Incompatible with Pint (empty classes, ie Exceptions) -->
+        <exclude name="Squiz.Classes.ClassDeclaration.CloseBraceSameLine" />
+        <!-- This rule ensures a new line is before every block comment -->
+        <exclude name="Squiz.Commenting.BlockComment.NoEmptyLineBefore" />
+        <!-- This rule ensures a new line is after every block comment -->
+        <exclude name="Squiz.Commenting.BlockComment.NoEmptyLineAfter" />
+        <!-- This rule is incompatible with PHPDoc for static analysis -->
+        <exclude name="Squiz.Commenting.BlockComment.WrongStart" />
+        <!-- This rule disallow @ tags in class definition, which is a problem for XSL-FO spec -->
+        <exclude name="Squiz.Commenting.ClassComment.TagNotAllowed" />
+        <!-- This rule ensures //end {className|interface} is at the end of every class/interface -->
+        <exclude name="Squiz.Commenting.ClosingDeclarationComment" />
+        <!-- Extended by LsaStandard, but still called -->
+        <exclude name="Squiz.Commenting.FunctionComment" />
+        <!-- This rule is incompatible with inline doc blocks for static analysis -->
+        <exclude name="Squiz.Commenting.InlineComment.DocBlock" />
+        <!-- This rule ensures only full-stops, question marks or exclamation marks are allowed at comment end -->
+        <exclude name="Squiz.Commenting.InlineComment.InvalidEndChar" />
+        <!-- This rule ensures an //end {loop} is at the end of a long loop -->
+        <exclude name="Squiz.Commenting.LongConditionClosingComment.Missing" />
+        <!-- This rule does not handle static typing -->
+        <exclude name="Squiz.Commenting.VariableComment.MissingVar" />
+        <!-- This rule is incompatible with Pint -->
+        <exclude name="Squiz.ControlStructures.SwitchDeclaration.SpacingAfterBreak" />
+        <!-- This rule is incompatible with Pint -->
+        <exclude name="Squiz.ControlStructures.SwitchDeclaration.BreakIndent" />
+        <!-- This rule ensures classes are stored in .inc files -->
+        <exclude name="Squiz.Files.FileExtension" />
+        <!-- A shame this rule has bugs with predicates -->
+        <exclude name="Squiz.PHP.DisallowBooleanStatement.Found" />
+        <!-- Opinionated, but I don't think it's always a good practice -->
+        <exclude name="Squiz.PHP.DisallowComparisonAssignment.AssignedBool" />
+        <!-- This rule ensures an empty line is present before the closing brace -->
+        <exclude name="Squiz.WhiteSpace.FunctionClosingBraceSpace" />
+        <!-- This rule ensures every argument has its line on a multi-line function declaration -->
+        <exclude name="Squiz.Functions.MultiLineFunctionDeclaration" />
+        <!-- This rule ensures every object instanciation is stored in a variable -->
+        <exclude name="Squiz.Objects.ObjectInstantiation" />
+        <!-- This rule ensures no space is before an object operator (not compatible with space indent) -->
+        <exclude name="Squiz.WhiteSpace.ObjectOperatorSpacing" />
+        <!-- Incompatible with Pint (empty classes, ie Exceptions) -->
+        <exclude name="Squiz.WhiteSpace.ScopeClosingBrace.ContentBefore" />
+        <!-- This rule ensures Squiz authoring is present on every file -->
+        <exclude name="Squiz.Commenting.FileComment" />
+        <!-- This rule is obsolete -->
+        <exclude name="Squiz.ControlStructures.ElseIfDeclaration.NotAllowed" />
+        <!-- This rule has no understandable ground -->
+        <exclude name="Squiz.ControlStructures.SwitchDeclaration.EmptyCase" />
+    </rule>
+
+    <!-- This rule checks every line length: 120 is needed for many classes -->
+    <rule ref="Generic.Files.LineLength">
+        <properties>
+            <property name="lineLimit" value="120" />
+            <property name="absoluteLineLimit" value="140" />
+            <!-- TODO Find a way to ignore only @phpstan-type -->
+            <property name="ignoreComments" value="true" />
+        </properties>
+    </rule>
+
+    <rule ref="LsaStandard.Commenting.FunctionComment">
+        <!-- This rule is not compatible with Pint -->
+        <exclude name="LsaStandard.Commenting.FunctionComment.SpacingAfterParamName" />
+        <!-- This rule is not compatible with Pint -->
+        <exclude name="LsaStandard.Commenting.FunctionComment.SpacingAfterParamType" />
+    </rule>
+
+    <!-- Specifies new lines before and after functions in classes -->
+    <rule ref="Squiz.WhiteSpace.FunctionSpacing">
+        <properties>
+            <property name="spacing" value="1" />
+            <property name="spacingBeforeFirst" value="0" />
+            <property name="spacingAfterLast" value="0" />
+        </properties>
+    </rule>
+    
+    <!-- Specifies new lines before and after properties in classes -->
+    <rule ref="Squiz.WhiteSpace.MemberVarSpacing">
+        <properties>
+            <property name="spacing" value="1" />
+            <property name="spacingBeforeFirst" value="0" />
+        </properties>
+    </rule>
+</ruleset>

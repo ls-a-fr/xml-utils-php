@@ -1,0 +1,49 @@
+{
+    "name": "ls-a/xml-utils",
+    "version": "1.0.0",
+    "description": "Utilities for XML handling: attributes, tags, namespaces, comparison and late evaluation",
+    "keywords": [
+        "xml",
+        "utils",
+        "tags",
+        "namespaces",
+        "comparison"
+    ],
+    "license": "GPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "ls-a",
+            "email": "contact@ls-a.fr"
+        }
+    ],
+    "scripts": {
+        "beautify": "php -d \"xdebug.mode=off\" vendor/bin/pint",
+        "phpstan": "./vendor/bin/phpstan analyse --memory-limit 4096M",
+        "phpcs": "php -d \"xdebug.mode=off\" vendor/bin/phpcs -p -s -d memory_limit=512M src",
+        "analyse": [
+            "@beautify",
+            "@phpstan",
+            "@phpcs"
+        ]
+    },
+    "require": {
+        "php": "^8.0.0"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.22",
+        "phpstan/phpstan": "^2.1",
+        "phpunit/phpunit": "^12.1",
+        "squizlabs/php_codesniffer": "^4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Lsa\\Xml\\Utils\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Lsa\\Xml\\Utils\\Tests\\": "tests/",
+            "LsaStandard\\": "phpcs/LsaStandard/"
+        }
+    }
+}
