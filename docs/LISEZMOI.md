@@ -1,8 +1,5 @@
 # XML Utils
 
-This documentation is also available in these languages:
-- [Français](docs/LISEZMOI.md)
-
 Cette bibliothèque offre une interface simple et lisible pour créer et manipuler du XML en toute simplicité. Comme de nombreuses autres bibliothèques, elle prend en charge la structure XML, mais propose une API compréhensible.
 
 Exemple de code :
