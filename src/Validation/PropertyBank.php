@@ -7,6 +7,7 @@ namespace Lsa\Xml\Utils\Validation;
 use Lsa\Xml\Utils\Collections\TypedAttributeCollection;
 use Lsa\Xml\Utils\Contracts\HasPostConstruct;
 use Lsa\Xml\Utils\Exceptions\PropertyNotFoundException;
+use Lsa\Xml\Utils\Validation\Base\Type;
 use ReflectionClass;
 
 /**
@@ -76,6 +77,55 @@ class PropertyBank
     public static function popSource(): void
     {
         array_pop(self::$sourceStack);
+    }
+
+    public static function addVirtual(string|TypedAttribute|AttributeGroup|Type $value, string|int|null $key = null)
+    {
+        // AttributeGroup handling
+        if(\is_string($value) === true && \is_subclass_of($value, AttributeGroup::class)) {
+            $value = new $value();
+        }
+        if($value instanceof AttributeGroup) {
+            foreach($value->attributeNames as $name) {
+                self::addVirtual($name);
+            }
+            return;
+        }
+
+        // Property handling
+        $propertyName = null;
+        $propertyType = null;
+
+        if(\is_string($key) === true) {
+            $propertyName = $key;
+            $propertyType = $value;
+        } else if($value instanceof TypedAttribute) {
+            $propertyName = $value->name;
+            $propertyType = $value;
+        } else if(\is_subclass_of($value, TypedAttribute::class) === true) {
+            /**
+             * @var TypedAttribute $property
+             */
+            $property = new $value();
+            $propertyName = $property->name;
+            $propertyType = $property->type;
+        }
+        
+        if($propertyName === null || $propertyType === null) {
+            throw new PropertyNotFoundException('Cannot find name or type for this property');
+        }
+
+        // Add property if necessary
+        static::getBank();
+        // Do not add if property already exists
+        if (isset(self::$bank[$propertyName]) === true) {
+            return self::$bank[$propertyName];
+        }
+        if (isset(self::$virtual[$propertyName]) === true) {
+            return self::$virtual[$propertyName];
+        }
+
+        self::$virtual[$propertyName] = $propertyType;
     }
 
     /**

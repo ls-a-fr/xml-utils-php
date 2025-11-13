@@ -21,15 +21,15 @@ class TypedAttribute
     /**
      * The validation class name
      *
-     * @var class-string<Type>
+     * @var class-string<Type>|Type
      */
-    public readonly string $type;
+    public readonly string|Type $type;
 
     /**
      * Creates a new TypedAttribute
      *
      * @param  string  $name
-     * @param  class-string<Type>  $type
+     * @param  class-string<Type>|Type  $type
      */
     public function __construct($name, $type)
     {
@@ -68,7 +68,7 @@ class TypedAttribute
     /**
      * Unpacks this validator, returns an array containing as a key its name, and as a value its type.
      *
-     * @return array<string,class-string<Type>>
+     * @return array<string,class-string<Type>|Type>
      */
     public function unpack(): array
     {

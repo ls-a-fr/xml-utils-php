@@ -20,7 +20,7 @@ use Lsa\Xml\Utils\Xml\Base\Tag;
  *
  * Heavily inspired from XSD structure.
  *
- * @phpstan-type UnpackedAttributes array<string,class-string<Type>>
+ * @phpstan-type UnpackedAttributes array<string,class-string<Type>|Type>
  */
 class Definition
 {
@@ -116,7 +116,7 @@ class Definition
     /**
      * Normalize value to push in a section. As its name suggest, this method can take a various number of types
      *
-     * @param  TypedAttributeCollection|AttributeGroupCollection|TypedAttribute|AttributeGroup|list<TypedAttribute|AttributeGroup|class-string<TypedAttribute|AttributeGroup>>|array<string,class-string<Type>>|string  $stuff  Value to normalize
+     * @param  TypedAttributeCollection|AttributeGroupCollection|TypedAttribute|AttributeGroup|array<string,class-string<Type>|Type>|list<TypedAttribute|AttributeGroup|class-string<TypedAttribute|AttributeGroup>>|string  $stuff  Value to normalize
      * @return UnpackedAttributes
      *
      * phpcs:disable Generic.Files.LineLength.TooLong
@@ -128,24 +128,33 @@ class Definition
         }
 
         if ($stuff instanceof AttributeGroup) {
-            // Keep track of groups
-            $this->referencedAttributeGroups->add($stuff);
-
-            $attributes = $stuff->asCollection();
-            $result = [];
-            foreach ($attributes as $attribute) {
-                $result = array_merge($result, $attribute->unpack());
-            }
-
-            return $result;
+            return $this->normalizeAttributeGroup($stuff);
         }
 
+        if (\is_array($stuff) === true && \array_is_list($stuff) === false) {
+            // Check array keys are string
+            assert(\array_reduce(array_keys($stuff), fn ($acc, $k) => $acc && \is_string($k), true) === true);
+
+            /**
+             * Element in a string-based array
+             *
+             * @var array<string,class-string<Type>|Type> $stuff
+             */
+            return $stuff;
+        }
+
+        // Note than array_is_list check is done before.
         if (
             $stuff instanceof TypedAttributeCollection
             || $stuff instanceof AttributeGroupCollection
-            || is_array($stuff) === true
+            || \is_array($stuff) === true
         ) {
             $result = [];
+            /**
+             * Element is a collection or a list
+             *
+             * @var TypedAttributeCollection|AttributeGroupCollection|list<TypedAttribute|AttributeGroup|class-string<TypedAttribute|AttributeGroup>> $stuff
+             */
             foreach ($stuff as $thing) {
                 $result = array_merge($result, $this->normalize($thing));
             }
@@ -186,12 +195,35 @@ class Definition
     }
 
     /**
+     * Utility method to normalize an attribute group
+     *
+     * @param  AttributeGroup  $attributeGroup  An attribute group
+     * @return UnpackedAttributes
+     */
+    private function normalizeAttributeGroup(AttributeGroup $attributeGroup): array
+    {
+        // Keep track of groups
+        $this->referencedAttributeGroups->add($attributeGroup);
+
+        $attributes = $attributeGroup->asCollection();
+        $result = [];
+        foreach ($attributes as $attribute) {
+            $result = array_merge($result, $attribute->unpack());
+        }
+
+        return $result;
+    }
+
+    /**
      * Declares several typed attribute for this tag
      *
      * @param  TypedAttributeCollection|AttributeGroupCollection|list<TypedAttribute|AttributeGroup>|array<string,class-string<TypedAttribute|AttributeGroup>>  $allowed  The attributes
      */
     public function allows(TypedAttributeCollection|AttributeGroupCollection|array $allowed): static
     {
+        foreach($allowed as $key => $allow) {
+            PropertyBank::addVirtual($allow, $key);
+        }
         $this->pushToSection('allowed', $allowed);
 
         return $this;
@@ -204,6 +236,7 @@ class Definition
      */
     public function allow(TypedAttribute|AttributeGroup|string $allowed): static
     {
+        PropertyBank::addVirtual($allowed);
         $this->pushToSection('allowed', [$allowed]);
 
         return $this;
@@ -224,7 +257,7 @@ class Definition
     /**
      * Declares several new inheritable attributes for this tag
      *
-     * @param  TypedAttributeCollection|AttributeGroupCollection|array<string,class-string<TypedAttribute|AttributeGroup>>  $inheritable  The attributes
+     * @param  TypedAttributeCollection|AttributeGroupCollection|list<class-string<TypedAttribute|AttributeGroup>>  $inheritable  The attributes
      */
     public function inheritables(TypedAttributeCollection|AttributeGroupCollection|array $inheritable): static
     {
@@ -236,7 +269,7 @@ class Definition
     /**
      * Declares several mandatory typed attributes for this tag
      *
-     * @param  TypedAttributeCollection|array<string,class-string<TypedAttribute>>  $mandatory  The attributes
+     * @param  TypedAttributeCollection|list<class-string<TypedAttribute>>  $mandatory  The attributes
      */
     public function requires(TypedAttributeCollection|array $mandatory): static
     {
